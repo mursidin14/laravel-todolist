@@ -33,4 +33,11 @@ class UserControllerTest extends TestCase
             'password' => 'salah'
         ])->assertSeeText('username or password invalid');
     }
+
+    public function testLogout()
+    {
+        $this->withSession([
+            'username' => 'mursidin'
+        ])->post('/logout')->assertRedirect('/')->assertSessionMissing('username');
+    }
 }
