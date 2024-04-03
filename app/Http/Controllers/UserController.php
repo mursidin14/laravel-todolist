@@ -25,7 +25,7 @@ class UserController extends Controller
                ]);
     }
 
-    public function doLogin(Request $request): Response
+    public function doLogin(Request $request): RedirectResponse
     {
         $username = $request->input('username');
         $password = $request->input('password');
@@ -42,7 +42,7 @@ class UserController extends Controller
         if($this->userService->login($username, $password)){
             $request->session()->put('username', $username);
             
-            return response('/');
+            return redirect('/');
         }
 
         return response()
