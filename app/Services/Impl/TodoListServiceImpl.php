@@ -29,7 +29,7 @@ class TodoListServiceImpl implements TodoListService
         $todoList = Session::get('todolist');
 
         foreach($todoList as $index => $value) {
-            if($value['id'] == $todoId) {
+            if(isset($value['id']) && $value['id'] == $todoId) {
                 unset($todoList[$index]);
                 break;
             }

@@ -70,10 +70,10 @@ class TodoListServiceTest extends TestCase
         $this->todoListService->removeTodoList('3');
         self::assertEquals(2, sizeof($this->todoListService->getTodoList()));
 
-        $this->todoListService->removeTodoList('2');
+        $this->todoListService->removeTodoList('1');
         self::assertEquals(1, sizeof($this->todoListService->getTodoList()));
 
-        $this->todoListService->removeTodoList('1');
+        $this->todoListService->removeTodoList('2');
         self::assertEquals(0, sizeof($this->todoListService->getTodoList()));
     }
 }
