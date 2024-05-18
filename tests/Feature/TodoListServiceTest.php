@@ -7,6 +7,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Session;
 use Tests\TestCase;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Testing\Assert;
 
 class TodoListServiceTest extends TestCase
 {
@@ -16,6 +18,8 @@ class TodoListServiceTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        DB::delete('delete from todos');
 
         $this->todoListService = $this->app->make(TodoListService::class);
     }
@@ -29,7 +33,7 @@ class TodoListServiceTest extends TestCase
     {
         $this->todoListService->saveTodo('1', 'mursidin');
 
-        $todolist = Session::get('todolist');
+        $todolist = $this->todoListService->getTodoList();
         foreach($todolist as $value){
             self::assertEquals('1', $value['id']);
             self::assertEquals('mursidin', $value['todo']);
@@ -57,7 +61,7 @@ class TodoListServiceTest extends TestCase
         $this->todoListService->saveTodo('1', 'mursidin');
         $this->todoListService->saveTodo('2', 'asrul');
 
-        self::assertEquals($excepted, $this->todoListService->getTodoList());
+        Assert::assertArraySubset($excepted, $this->todoListService->getTodoList());
     }
 
     public function testRemoveTodoList()

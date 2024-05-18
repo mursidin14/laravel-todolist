@@ -26,6 +26,8 @@ class TodoListServiceImpl implements TodoListService
     public function removeTodoList(string $todoId)
     {
         $todo = Todo::query()->find($todoId);
-        $todo->delete();
+        if($todo != null) {
+            $todo->delete();
+        }
     }
 }
