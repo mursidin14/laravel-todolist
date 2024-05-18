@@ -2,6 +2,7 @@
 
 namespace App\Services\Impl;
 
+use App\Models\Todo;
 use App\Services\TodoListService;
 use Illuminate\Support\Facades\Session;
 
@@ -9,32 +10,22 @@ class TodoListServiceImpl implements TodoListService
 {
     public function saveTodo(string $id, string $todo): void
     {
-        if(!Session::exists('todolist')){
-            Session::put('todolist', []);
-        };
-
-        Session::push('todolist', [
+        $todo = new Todo([
             'id' => $id,
-            'todo' =>$todo
+            'todo' => $todo
         ]);
+        
+        $todo->save();
     }
 
     public function getTodoList(): array
     {
-        return Session::get('todolist', []);
+        return Todo::query()->get()->toArray();
     }
 
     public function removeTodoList(string $todoId)
     {
-        $todoList = Session::get('todolist');
-
-        foreach($todoList as $index => $value) {
-            if(isset($value['id']) && $value['id'] == $todoId) {
-                unset($todoList[$index]);
-                break;
-            }
-        }
-
-        Session::put('todolist', $todoList);
+        $todo = Todo::query()->find($todoId);
+        $todo->delete();
     }
 }
