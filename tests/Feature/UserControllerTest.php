@@ -2,12 +2,21 @@
 
 namespace Tests\Feature;
 
+use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Illuminate\Support\Facades\DB;
 
 class UserControllerTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        DB::delete("delete from users");
+    }
+
     public function testLoginPage()
     {
         $this->get('/login')->assertSeeText('Login');
@@ -22,10 +31,12 @@ class UserControllerTest extends TestCase
 
     public function testLoginSuccess()
     {
+        $this->seed(UserSeeder::class);
+        
         $this->post('/login', [
-            'username' => 'mursidin',
+            'username' => 'mursidinrm14@gmail.com',
             'password' => '123456'
-        ])->assertRedirect('/')->assertSessionHas('username', 'mursidin');
+        ])->assertRedirect('/')->assertSessionHas('username', 'mursidinrm14@gmail.com');
     }
 
     public function testLoginForUser()
